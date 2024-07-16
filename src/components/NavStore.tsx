@@ -5,11 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import LogoContainer from "./Logo";
 import NavUser from "./NavUser";
 
-interface CartItemsCountProps {
-	cartItemsCount: number;
-}
-
-const NavStore = ({ cartItemsCount }: CartItemsCountProps) => {
+const NavStore = () => {
 	return (
 		<Navbar
 			collapseOnSelect
@@ -28,7 +24,7 @@ const NavStore = ({ cartItemsCount }: CartItemsCountProps) => {
 						<Nav.Link href="#footer">Contato</Nav.Link>
 						<Nav.Link href="#deal">Promoção</Nav.Link>
 					</Nav>
-					<NavUser cartItemsCount={cartItemsCount} />
+					<NavUser />
 				</Navbar.Collapse>
 			</Container>
 		</Navbar>
