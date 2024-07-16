@@ -1,5 +1,3 @@
-<!-- @format -->
-
 useProducts Hook
 useProducts é um hook customizado em React que facilita a busca de produtos a partir de uma API. Este hook pode ser reutilizado em qualquer componente para obter a lista de produtos.
 
@@ -61,3 +59,7 @@ const [error, setError] = useState(null);
 };
 
 export default useDeals;
+
+#API De cotações
+
+https://docs.awesomeapi.com.br/api-de-moedas

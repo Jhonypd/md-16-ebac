@@ -5,19 +5,22 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Calculator from "./components/Calculator/Calculator";
 import History from "./components/Calculator/History";
-import { ExchangeContext } from "./components/Calculator/ExchangeContext";
+import { ExchangeProvider } from "./components/Calculator/ExchangeContext";
+import Container from "./components/Container/Container";
 
 function App() {
-	return (
-		<ExchangeContext>
-			<div className="App">
-				<Header />
-				<Calculator />
-				<History />
-				<Footer />
-			</div>
-		</ExchangeContext>
-	);
+  return (
+    <div className="flex flex-col min-h-screen">
+      <ExchangeProvider>
+        <Header />
+        <Container className="pt-24 h-screen">
+          <Calculator />
+          <History />
+        </Container>
+        <Footer />
+      </ExchangeProvider>
+    </div>
+  );
 }
 
 export default App;
