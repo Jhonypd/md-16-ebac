@@ -23,6 +23,8 @@ interface addToCartProps {
 	addToCart: (product: ProductProps) => void;
 }
 
+type Nullable<T> = T | null;
+
 interface TimeLeft {
 	days: number;
 	hours: number;
@@ -32,8 +34,8 @@ interface TimeLeft {
 
 const DealOfWeek = ({ addToCart }: addToCartProps) => {
 	const { weeklyDeals, error } = useDeals();
-	const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
-	const [isStarted, setIsStarted] = useState(false);
+	const [timeLeft, setTimeLeft] = useState<Nullable<TimeLeft>>(null);
+	const [isStarted, setIsStarted] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (weeklyDeals && weeklyDeals.length > 0) {

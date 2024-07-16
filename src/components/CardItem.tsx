@@ -10,9 +10,12 @@ interface ProductProps {
 	image: string;
 	price: number;
 }
+
+type ProductCardProps = Omit<ProductProps, 'id'>;
+
 interface ParamsProps {
 	addToCart: (product: ProductProps) => void;
-	product: ProductProps;
+	product: ProductCardProps; 
 }
 
 const CardItem = ({ product, addToCart }: ParamsProps) => {
@@ -26,7 +29,7 @@ const CardItem = ({ product, addToCart }: ParamsProps) => {
 			<Card.Body>
 				<Card.Title>{product.title}</Card.Title>
 				<p>R$ {product.price}</p>
-				<Button variant="dark" onClick={() => addToCart(product)}>
+				<Button variant="dark" onClick={() => addToCart(product as ProductProps)}>
 					Adicionar ao carrinho
 				</Button>
 			</Card.Body>
