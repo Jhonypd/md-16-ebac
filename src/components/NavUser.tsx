@@ -1,6 +1,6 @@
 /** @format */
 import { CiUser } from "react-icons/ci";
-import { FaCartShopping } from "react-icons/fa6";
+// import { FaCartShopping } from "react-icons/fa6";
 
 import { Nav } from "react-bootstrap";
 
@@ -15,7 +15,7 @@ const NavUser = () => {
 				</Nav.Link>
 			</Nav.Item>
 
-			<Nav.Item className="inline-block text-center text-slate-400">
+			{/* <Nav.Item className="inline-block text-center text-slate-400">
 				<Nav.Link
 					href="#"
 					className="flex items-center justify-center relative w-9 h-9 text-slate-900 bg-[#eceff6] rounded-[100%] ">
@@ -24,7 +24,7 @@ const NavUser = () => {
 						2
 					</span>
 				</Nav.Link>
-			</Nav.Item>
+			</Nav.Item> */}
 		</Nav>
 	);
 };

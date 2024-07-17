@@ -19,10 +19,10 @@ const NavStore = () => {
 				/>
 				<Navbar.Collapse id="responsive-navbar-nav">
 					<Nav className="ms-auto">
-						<Nav.Link href="#top">Inicio</Nav.Link>
+						{/* <Nav.Link href="#top">Inicio</Nav.Link>
 						<Nav.Link href="#products">Shop</Nav.Link>
 						<Nav.Link href="#footer">Contato</Nav.Link>
-						<Nav.Link href="#deal">Promoção</Nav.Link>
+						<Nav.Link href="#deal">Promoção</Nav.Link> */}
 					</Nav>
 					<NavUser />
 				</Navbar.Collapse>
