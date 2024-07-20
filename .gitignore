@@ -21,3 +21,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# Ignorar todas as pastas __snapshots__ em qualquer lugar do projeto
+__snapshots__/
