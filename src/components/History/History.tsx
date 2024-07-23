@@ -21,35 +21,30 @@ const History: React.FC = () => {
 								Data
 							</th>
 							<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Tipo
-							</th>
-							<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Montante
-							</th>
-							<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 								De
 							</th>
 							<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 								Para
 							</th>
 							<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-								Resultado
+								Montante
+							</th>
+							<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Valor
+							</th>
+							<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+								Total
 							</th>
 						</tr>
 					</thead>
-					<tbody className="bg-white divide-y divide-gray-200 ">
+					<tbody className="bg-white divide-y divide-gray-200">
 						{history && history.length > 0 ? (
 							history.map((calc, index) => (
 								<tr
 									key={index}
 									className="text-sm text-gray-900 hover:bg-gray-100">
 									<td className="px-6 py-4 whitespace-nowrap">
-										{calc.date.toLocaleString()}
-									</td>
-
-									<td className="px-6 py-4 whitespace-nowrap">{calc.type}</td>
-									<td className="px-6 py-4 whitespace-nowrap">
-										{calc.formattedAmount}
+										{new Date(calc.date).toLocaleString()}
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap">
 										{calc.fromCurrency}
@@ -58,14 +53,18 @@ const History: React.FC = () => {
 										{calc.toCurrency}
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap">
-										{calc.formattedResult}
+										{calc.formattedAmount}
+									</td>
+									<td className="px-6 py-4 whitespace-nowrap">{calc.ask}</td>
+									<td className="px-6 py-4 whitespace-nowrap">
+										{calc.formattedTotal}
 									</td>
 								</tr>
 							))
 						) : (
 							<tr>
 								<td
-									colSpan={8}
+									colSpan={6}
 									className="px-6 py-4 text-sm text-gray-500 text-center">
 									Sem histórico
 								</td>

@@ -45,6 +45,8 @@ const Input: React.FC<InputProps> = ({
 			autoComplete={autoComplete}
 			maxLength={maxLength}
 			checked={checked}
+			aria-required={required}
+			aria-disabled={disabled}
 		/>
 	);
 };

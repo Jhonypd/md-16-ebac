@@ -1,128 +1,96 @@
-
-import React, { useContext, useState } from "react";
-import { ExchangeContext, Calculation } from "../../context/ExchangeContext";
+import React, { useContext } from "react";
+import { ExchangeContext } from "../../context/ExchangeContext";
 import Container from "../Container/Container";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import Select from "../Select/Select";
+import Infos from "../Infos/Infos";
+import { TbHelp } from "react-icons/tb";
+import useCurrencyConverter from "../../hooks/useCurrencyConvert";
 
 const Calculator: React.FC = () => {
-  const exchangeContext = useContext(ExchangeContext);
-  if (!exchangeContext)
-    throw new Error("ExchangeContext must be used within an ExchangeProvider");
+	const exchangeContext = useContext(ExchangeContext);
 
-  const { coins, addCalculation, fetchExchangeRates } = exchangeContext;
-  const [amount, setAmount] = useState<string>("");
-  const [fromCurrency, setFromCurrency] = useState<string>("");
-  const [toCurrency, setToCurrency] = useState<string>("");
-  const [isBuying, setIsBuying] = useState<boolean>(true);
-  const [validConversion, setValidConversion] = useState<boolean>(false);
-  const [result, setResult] = useState<number | null>(null);
+	if (!exchangeContext)
+		throw new Error("ExchangeContext must be used within an ExchangeProvider");
 
-  const convert = async () => {
-	try {
-	  const rates = await fetchExchangeRates(fromCurrency, toCurrency);
-	  if (!rates) return;
-  
-	  const fromValue = parseFloat(rates.dataFrom.ask);
-	  const toValue = parseFloat(rates.dataTo.bid);
-  
-	  const exchangeRate = isBuying
-		? (Number(amount) / fromValue) * toValue
-		: (Number(amount) / toValue) * fromValue;
-  
-	  setResult(exchangeRate);
-  
-	  const type: "Compra" | "Venda" = isBuying ? "Compra" : "Venda";
-  
-	  const calculation: Calculation = {
+	const { coins, combinations } = exchangeContext;
+	const {
 		amount,
 		fromCurrency,
 		toCurrency,
-		result: exchangeRate,
-		type,
-		fromValue,
-		toValue,
-		date: new Date(),
-		formattedAmount: new Intl.NumberFormat('pt-BR', {
-		  style: 'currency',
-		  currency: fromCurrency
-		}).format(parseFloat(amount)),
-		formattedResult: new Intl.NumberFormat('pt-BR', {
-		  style: 'currency',
-		  currency: toCurrency
-		}).format(exchangeRate)
-	  };
-  
-	  addCalculation(calculation);
-	} catch (error) {
-	  console.error("Error fetching exchange rates:", error);
-	}
-  };
-  
-  
+		validConversion,
+		result,
+		isModalOpen,
+		setFromCurrency,
+		setToCurrency,
+		handleAmountChange,
+		handleConvert,
+		openModal,
+		closeModal,
+	} = useCurrencyConverter();
 
-  const currencyOptions = Object.keys(coins).map((currency) => ({
-    value: currency,
-    label: `${currency} - ${coins[currency as keyof typeof coins]}`,
-  }));
+	const currencyOptions = Object.keys(coins).map((currency) => ({
+		value: currency,
+		label: `${currency} - ${coins[currency]}`,
+	}));
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setAmount(value);
-    const amountNumber = parseFloat(value);
-    setValidConversion(!isNaN(amountNumber) && amountNumber >= 0);
-  };
+	return (
+		<Container className="flex flex-col gap-3 items-center md:mt-8">
+			<h2 className="text-xl text-slate-800 font-bold">Conversão Monetária</h2>
+			<div className="flex gap-2 items-center mb-4">
+				<p className="text-slate-500 m-0">
+					Antes de seguir, veja as combinações disponíveis
+				</p>
+				<Button variant="default" onClick={openModal} className="py-2 px-2 w-fit">
+					<TbHelp />
+				</Button>
+			</div>
+			<Input
+				type="text"
+				value={amount}
+				onChange={handleAmountChange}
+				placeholder="Montante"
+			/>
+			<Select
+				label="De"
+				options={currencyOptions}
+				value={fromCurrency}
+				onChange={(e) => setFromCurrency(e.target.value)}
+			/>
+			<Select
+				label="Para"
+				options={currencyOptions}
+				value={toCurrency}
+				onChange={(e) => setToCurrency(e.target.value)}
+			/>
 
-  return (
-    <Container className="flex flex-col gap-3 items-center md:mt-8">
-      <h2 className="text-xl text-slate-800 font-bold">Conversão Monetária</h2>
-      <Input
-        type="text"
-        value={amount}
-        onChange={handleAmountChange}
-        placeholder="Montante"
-      />
-      <Select
-        options={currencyOptions}
-        value={fromCurrency}
-        onChange={(e) => setFromCurrency(e.target.value)}
-      />
-      <Select
-        options={currencyOptions}
-        value={toCurrency}
-        onChange={(e) => setToCurrency(e.target.value)}
-      />
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={isBuying}
-            onChange={(e) => setIsBuying(e.target.checked)}
-          />
-          Compra
-        </label>
-      </div>
-      <Button
-        onClick={convert}
-        className={`uppercase ${
-          validConversion ? "" : "opacity-50 cursor-not-allowed"
-        }`}
-        disabled={!validConversion}
-      >
-        Converter
-      </Button>
-      {result !== null && (
-        <p>
-          Resultado:{" "}
-          {new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: toCurrency,
-          }).format(result)}
-        </p>
-      )}
-    </Container>
-  );
+			<Button
+				onClick={handleConvert}
+				className={`uppercase ${validConversion ? "" : "opacity-50 cursor-not-allowed"}`}
+				disabled={!validConversion}>
+				Converter
+			</Button>
+			{result !== null && (
+				<p>
+					Resultado:{" "}
+					{new Intl.NumberFormat("pt-BR", {
+						style: "currency",
+						currency: toCurrency,
+					}).format(result)}
+				</p>
+			)}
+			{isModalOpen && (
+				<Infos
+					lists={Object.keys(combinations).map((key) => ({
+						value: key,
+						label: `${key} - ${combinations[key]}`,
+					}))}
+					onClose={closeModal}
+				/>
+			)}
+		</Container>
+	);
 };
 
 export default Calculator;
